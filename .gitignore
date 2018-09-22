@@ -19,3 +19,5 @@ Gemfile.lock
 
 # Don't accidentally commit the built gem
 *.gem
+
+.byebug_history
