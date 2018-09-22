@@ -1,4 +1,4 @@
-# RbFft
+# RbFFT
 
 Welcome to your new gem! In this directory, you'll find the files you need to be able to package up your Ruby library into a gem. Put your Ruby code in the file `lib/rb_fft`. To experiment with that code, run `bin/console` for an interactive prompt.
 
@@ -36,4 +36,4 @@ Bug reports and pull requests are welcome on GitHub at https://github.com/[USERN
 
 ## Code of Conduct
 
-Everyone interacting in the RbFft project’s codebases, issue trackers, chat rooms and mailing lists is expected to follow the [code of conduct](https://github.com/[USERNAME]/rb_fft/blob/master/CODE_OF_CONDUCT.md).
+Everyone interacting in the RbFFT project’s codebases, issue trackers, chat rooms and mailing lists is expected to follow the [code of conduct](https://github.com/[USERNAME]/rb_fft/blob/master/CODE_OF_CONDUCT.md).

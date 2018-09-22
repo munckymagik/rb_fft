@@ -5,7 +5,7 @@ require "rb_fft/version"
 
 Gem::Specification.new do |spec|
   spec.name          = "rb_fft"
-  spec.version       = RbFft::VERSION
+  spec.version       = RbFFT::VERSION
   spec.authors       = ["Dan Munckton"]
   spec.email         = ["dan@cultivatehq.com"]
 

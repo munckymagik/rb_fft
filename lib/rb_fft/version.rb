@@ -1,3 +1,3 @@
-module RbFft
+module RbFFT
   VERSION = "0.1.0"
 end

@@ -1,9 +1,9 @@
 #include "rb_fft.h"
 
-VALUE rb_mRbFft;
+VALUE rb_mRbFFT;
 
 void
 Init_rb_fft(void)
 {
-  rb_mRbFft = rb_define_module("RbFft");
+  rb_mRbFFT = rb_define_module("RbFFT");
 }

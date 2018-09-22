@@ -1,6 +1,6 @@
 require "rb_fft/version"
 require "rb_fft/rb_fft"
 
-module RbFft
+module RbFFT
   # Your code goes here...
 end
