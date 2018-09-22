@@ -7,16 +7,17 @@ Gem::Specification.new do |spec|
   spec.name          = "rb_fft"
   spec.version       = RbFFT::VERSION
   spec.authors       = ["Dan Munckton"]
-  spec.email         = ["dan@cultivatehq.com"]
+  spec.email         = ["dangit@munckfish.net"]
 
-  spec.summary       = %q{TODO: Write a short summary, because RubyGems requires one.}
-  spec.description   = %q{TODO: Write a longer description or delete this line.}
-  spec.homepage      = "TODO: Put your gem's website or public repo URL here."
+  spec.summary       = 'The Cooley-Tukey FFT algorithm in Ruby and C++'
+  spec.description   = 'An experiment which implements the Cooley-Tukey FFT algorithm in Ruby and C++ to compare speed'
+  spec.homepage      = 'https://github.com/munckymagik/rb_fft'
 
   # Prevent pushing this gem to RubyGems.org. To allow pushes either set the 'allowed_push_host'
   # to allow pushing to a single host or delete this section to allow pushing to any host.
   if spec.respond_to?(:metadata)
-    spec.metadata["allowed_push_host"] = "TODO: Set to 'http://mygemserver.com'"
+    # I don't want to publish this (cannot be nil, must be a string)
+    spec.metadata["allowed_push_host"] = ''
   else
     raise "RubyGems 2.0 or newer is required to protect against " \
       "public gem pushes."
