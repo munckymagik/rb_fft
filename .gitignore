@@ -16,3 +16,6 @@ mkmf.log
 .rspec_status
 
 Gemfile.lock
+
+# Don't accidentally commit the built gem
+*.gem
