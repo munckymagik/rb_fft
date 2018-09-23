@@ -3,4 +3,6 @@
 
 #include "ruby.h"
 
+void Init_RbFFT_NativeImpl(VALUE m);
+
 #endif /* RB_FFT_H */
