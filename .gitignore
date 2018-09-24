@@ -23,3 +23,5 @@ Gemfile.lock
 .byebug_history
 
 /.vscode
+
+*.todo
