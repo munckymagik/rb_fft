@@ -1,5 +1,5 @@
 #include "rb_fft.h"
-#include "fft.h"
+#include "cooley_tukey.h"
 
 #include <complex>
 
@@ -48,7 +48,7 @@ static VALUE NativeImpl_fft(VALUE _self, VALUE rb_samples) {
   }
 
   // Do FFT calculation here NOTE mutates input!
-  fft2(samples, samples_len);
+  cooley_tukey::fft_in_place(samples, samples_len);
 
   // TODO pre-allocate as we know the size
   VALUE rb_result = rb_ary_new();

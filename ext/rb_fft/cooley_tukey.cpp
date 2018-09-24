@@ -1,16 +1,16 @@
 //
-//  Example from https://en.wikipedia.org/wiki/Cooley%E2%80%93Tukey_FFT_algorithm
+// This file contains an implementation of the Cooley-Tukey "Fast Fourier Transform" (FFT)
+// algorithm, and is based on example code from:
+//     https://en.wikipedia.org/wiki/Cooley%E2%80%93Tukey_FFT_algorithm
 //
 
-#include "fft.h"
+#include "cooley_tukey.h"
 
 using std::complex;
 
 // separate even/odd elements to lower/upper halves of the array respectively.
-// Due to the Butterfly combinations, this turns out to be the simplest way
-// to get the job done without clobbering the wrong elements.
 static void separate(complex<double> *a, const long n) {
-    complex<double>* b = new complex<double>[n/2]; // get temp head storage
+    complex<double>* b = new complex<double>[n/2]; // get temp heap storage
     for (long i = 0; i < n / 2; i++)
         b[i] = a[i * 2 + 1]; // copy all the odd elements to temp
     for (long i = 0; i < n / 2; i++)
@@ -20,21 +20,20 @@ static void separate(complex<double> *a, const long n) {
     delete[] b;
 }
 
-// N must be a power-of-2, or bad things will happen.
-// Currently no check for this condition
+// N input samples in X[] are FFT'd and the results are left in X[].
 //
-// N input samples in X[] are FFT'd and results left in X[].
-// Because of Nyquist theorem, N samples means only first N/2
-// FFT results in X[] are the answer.
-// (upper half of X[] is a reflection with no new information).
-void fft2(complex<double> *X, const long N) {
+// Because of Nyquist theorem, N samples means only first N/2 FFT results in X[] are the answer.
+// The upper half of X[] is a reflection of the lower with no new information.
+//
+// N must be a power-of-2, or bad things will happen. Currently there is no check for this condition.
+void cooley_tukey::fft_in_place(complex<double> *X, const long N) {
     if (N < 2) {
         // bottom of recursion.
         // Do nothing here, because already X[0] = x[0]
     } else {
         separate(X, N); // all evens to lower half, all odds to upper half
-        fft2(X, N / 2); // recurse even items
-        fft2(X + N/2, N / 2); // recurse odd items
+        fft_in_place(X, N / 2); // recurse even items
+        fft_in_place(X + N/2, N / 2); // recurse odd items
 
         // combine results of two half recursions
         for (long k = 0; k < N / 2; k++) {
