@@ -10,12 +10,6 @@ RSpec.shared_examples 'an FFT implementation' do
       end
     end
 
-    context 'when passed an empty array' do
-      it 'returns an empty array' do
-        expect(subject.fft([])).to eq([])
-      end
-    end
-
     context 'when passed an array not containing complex numbers' do
       it 'raises an argument error' do
         expect{
@@ -24,11 +18,21 @@ RSpec.shared_examples 'an FFT implementation' do
       end
     end
 
-    context 'the base case: when input size is 1' do
-      it 'does nothing' do
-        xs = RbFFT::SignalGen.gen([1], 1)
-        ys = subject.fft(xs)
-        expect(ys).to eq(xs)
+    context 'when input array size is not a power of 2' do
+      let(:powers_of_2) { 4.times.map { |exp| 2 ** exp }}
+      let(:non_powers_of_2) { (0...powers_of_2.last).to_a - powers_of_2 }
+
+      it 'raises an argument error' do
+        non_powers_of_2.each do |n|
+          xs = RbFFT::SignalGen.gen([1], n)
+          expect { subject.fft(xs) }
+            .to raise_error(ArgumentError, "array size must be a power of 2")
+        end
+
+        powers_of_2.each do |n|
+          xs = RbFFT::SignalGen.gen([1], 2)
+          expect { subject.fft(xs) }.not_to raise_error
+        end
       end
     end
 

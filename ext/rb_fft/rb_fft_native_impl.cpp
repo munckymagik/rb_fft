@@ -9,14 +9,20 @@ static ID idComplex;
 static ID idReal;
 static ID idImag;
 
+static inline bool is_power_of_2(const long size) {
+  return size > 0 && (size & (size - 1)) == 0;
+}
+
 static VALUE NativeImpl_fft(VALUE _self, VALUE rb_samples) {
   // Checks we have been passed an array or raises a TypeError
   Check_Type(rb_samples, T_ARRAY);
 
   const long samples_len = RARRAY_LEN(rb_samples);
 
-  if (samples_len <= 1) {
-    return rb_samples;
+  // The size of the input must be a power-of-2 for Cooley-Tukey because it splits its input in
+  // half each time it recurses
+  if (!is_power_of_2(samples_len)) {
+    rb_raise(rb_eArgError, "array size must be a power of 2");
   }
 
   // NOTE memory malloc'd here

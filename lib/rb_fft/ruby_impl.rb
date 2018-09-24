@@ -1,7 +1,9 @@
 module RbFFT
   module RubyImpl
     def self.fft(array_of_complex)
-      raise TypeError, "expected Array" unless array_of_complex.is_a? Array
+      raise TypeError, 'expected Array' unless array_of_complex.is_a? Array
+      raise ArgumentError, 'array size must be a power of 2' \
+        unless power_of_2?(array_of_complex.length)
 
       array_of_complex
         .dup
@@ -60,6 +62,10 @@ module RbFFT
       end
 
       arr
+    end
+
+    def self.power_of_2?(size)
+      size.positive? && (size & (size - 1)).zero?
     end
   end
 end
