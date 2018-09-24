@@ -1,12 +1,22 @@
 module RbFFT
   module RubyImpl
-    def self.fft(complex_samples)
-      complex_samples
+    def self.fft(array_of_complex)
+      raise TypeError, "expected Array" unless array_of_complex.is_a? Array
+
+      array_of_complex
         .dup
         .tap { |copy| fft_inplace!(copy) }
     end
 
+    # ATTENTION operates "in-place" - it mutates xs
     def self.fft_inplace!(xs, offset = 0, n = xs.length)
+      # nothing to do
+      return if n == 0
+
+      # check the first element so by the time we have recursed we have checked all elements once
+      raise ArgumentError, "array elements must be Complex numbers" unless xs[offset].is_a? Complex
+
+      # this is the base-case of the recursion so we can return and unwind
       return if n < 2
 
       half_n = n / 2
