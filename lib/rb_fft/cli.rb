@@ -13,12 +13,12 @@ module RbFFT
 
     Options = Struct.new(:engine, :samples, :frequencies)
 
-    def self.main(argv)
+    def self.main(argv, out)
       options = Options.new(DEFAULT_ENGINE, DEFAULT_SAMPLES, DEFAULT_FREQS)
 
       OptionParser.new do |opts|
         opts.on("--version", "Show the version number") do |v|
-          puts "v#{RbFFT::VERSION}"
+          out.puts "v#{RbFFT::VERSION}"
           return EXIT_SUCCESS
         end
         opts.on("-e",
@@ -42,22 +42,22 @@ module RbFFT
         end
       end.parse!(argv)
 
-      puts "#{options.engine} #{options.samples} #{options.frequencies}"
+      out.puts "#{options.engine} #{options.samples} #{options.frequencies}"
 
       samples = RbFFT::SignalGen.gen(options.frequencies, options.samples)
 
-      puts
-      puts "Index\tSample"
-      puts samples.
+      out.puts
+      out.puts "Index\tSample"
+      out.puts samples.
         each_with_index
         .map { |s, i| format("%3d\t%f", i, s.abs) }
         .join("\n")
 
       results = options.engine.fft(samples)
 
-      puts
-      puts "Freq\tAmp\tHistogram"
-      puts results
+      out.puts
+      out.puts "Freq\tAmp\tHistogram"
+      out.puts results
         .slice(0, options.samples / 2)
         .each_with_index
         .map { |complex, frequency|
