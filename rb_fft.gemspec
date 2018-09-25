@@ -10,7 +10,7 @@ Gem::Specification.new do |spec|
   spec.email         = ["dangit@munckfish.net"]
 
   spec.summary       = 'The Cooley-Tukey FFT algorithm in Ruby and C++'
-  spec.description   = 'An experiment which implements the Cooley-Tukey FFT algorithm in Ruby and C++ to compare speed'
+  spec.description   = 'An implementation of the Cooley-Tukey FFT algorithm in Ruby and C++'
   spec.homepage      = 'https://github.com/munckymagik/rb_fft'
 
   # Prevent pushing this gem to RubyGems.org. To allow pushes either set the 'allowed_push_host'

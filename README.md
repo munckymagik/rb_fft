@@ -1,6 +1,6 @@
 # RbFFT
 
-An experiment which implements the Cooley-Tukey FFT algorithm in Ruby and C++ to compare speed.
+An implementation of the Cooley-Tukey FFT algorithm in Ruby and C++.
 
 ## Installation
 
