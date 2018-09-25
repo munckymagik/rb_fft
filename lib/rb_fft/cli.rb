@@ -6,10 +6,10 @@ module RbFFT
     ENGINES = {
       'native' => RbFFT::NativeImpl,
       'ruby' => RbFFT::RubyImpl
-    }
+    }.freeze
     DEFAULT_ENGINE = ENGINES['native']
     DEFAULT_SAMPLES = 32
-    DEFAULT_FREQS = [2, 5, 11, 17, 29]
+    DEFAULT_FREQS = [2, 5, 11, 17, 29].freeze
 
     Options = Struct.new(:engine, :samples, :frequencies, :show_version)
 
@@ -39,26 +39,26 @@ module RbFFT
         options = Options.new(DEFAULT_ENGINE, DEFAULT_SAMPLES, DEFAULT_FREQS, false)
 
         OptionParser.new do |opts|
-          opts.on("--version", "Show the version number") do |v|
+          opts.on('--version', 'Show the version number') do |v|
             options.show_version = v
           end
-          opts.on("-e",
-                  "--engine ENGINE",
+          opts.on('-e',
+                  '--engine ENGINE',
                   String,
                   ENGINES,
                   "The FFT engine to use (#{ENGINES.keys.join(', ')})") do |engine|
             options.engine = engine
           end
-          opts.on("-s",
-                  "--samples SAMPLES",
+          opts.on('-s',
+                  '--samples SAMPLES',
                   Integer,
-                  "The number of samples to generate") do |samples|
+                  'The number of samples to generate') do |samples|
             options.samples = samples
           end
-          opts.on("-f",
-                  "--freqs a,b,c",
+          opts.on('-f',
+                  '--freqs a,b,c',
                   Array,
-                  "The frequencies to generate") do |frequencies|
+                  'The frequencies to generate') do |frequencies|
             options.frequencies = frequencies.map(&:to_i)
           end
         end.parse!(argv)
@@ -79,8 +79,8 @@ module RbFFT
       def show_samples(out, samples)
         out.puts
         out.puts "Index\tSample"
-        out.puts samples.
-          each_with_index
+        out.puts samples
+          .each_with_index
           .map { |s, i| format("%3d\t%f", i, s.abs) }
           .join("\n")
         out.puts

@@ -4,32 +4,32 @@ RSpec.shared_examples 'an FFT implementation' do
   describe '.fft' do
     context 'when passed something other than an array' do
       it 'raises TypeError' do
-        expect {
+        expect do
           subject.fft(nil)
-        }.to raise_error(TypeError, /expected Array/)
+        end.to raise_error(TypeError, /expected Array/)
       end
     end
 
     context 'when passed an array not containing complex numbers' do
       it 'raises an argument error' do
-        expect{
+        expect do
           subject.fft([1.0.to_c, 2.0])
-        }.to raise_error(ArgumentError, "array elements must be Complex numbers")
+        end.to raise_error(ArgumentError, 'array elements must be Complex numbers')
       end
     end
 
     context 'when input array size is not a power of 2' do
-      let(:powers_of_2) { 4.times.map { |exp| 2 ** exp }}
+      let(:powers_of_2) { 4.times.map { |exp| 2**exp } }
       let(:non_powers_of_2) { (0...powers_of_2.last).to_a - powers_of_2 }
 
       it 'raises an argument error' do
         non_powers_of_2.each do |n|
           xs = RbFFT::SignalGen.gen([1], n)
           expect { subject.fft(xs) }
-            .to raise_error(ArgumentError, "array size must be a power of 2")
+            .to raise_error(ArgumentError, 'array size must be a power of 2')
         end
 
-        powers_of_2.each do |n|
+        powers_of_2.each do |_n|
           xs = RbFFT::SignalGen.gen([1], 2)
           expect { subject.fft(xs) }.not_to raise_error
         end

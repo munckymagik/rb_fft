@@ -1,3 +1,3 @@
-require "mkmf"
+require 'mkmf'
 
-create_makefile("rb_fft/rb_fft")
+create_makefile('rb_fft/rb_fft')
