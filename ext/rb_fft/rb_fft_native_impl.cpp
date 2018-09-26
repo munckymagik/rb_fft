@@ -35,10 +35,11 @@ static VALUE NativeImpl_fft(VALUE _self, VALUE rb_samples) {
 
     // The element must be of Ruby type Complex
     if (!RB_TYPE_P(elem, T_COMPLEX)) {
-      rb_raise(rb_eArgError, "array elements must be Complex numbers");
-
       // NOTE memory freed here
       delete[] samples;
+
+      // BEWARE does not return
+      rb_raise(rb_eArgError, "array elements must be Complex numbers");
     }
 
     // Call accessors on the Complex to fetch the two components
