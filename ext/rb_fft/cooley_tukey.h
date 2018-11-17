@@ -5,7 +5,7 @@
 
 namespace cooley_tukey {
 
-void fft_in_place(std::complex<double> *X, const long N);
+void fft_in_place(std::complex<double> *X, const size_t N);
 
 }
 

@@ -4,6 +4,7 @@
 #include <complex>
 
 using std::complex;
+using std::make_unique;
 
 static ID idComplex;
 static ID idReal;
@@ -17,7 +18,7 @@ static VALUE NativeImpl_fft(VALUE _self, VALUE rb_samples) {
   // Checks we have been passed an array or raises a TypeError
   Check_Type(rb_samples, T_ARRAY);
 
-  const long samples_len = RARRAY_LEN(rb_samples);
+  const auto samples_len = RARRAY_LEN(rb_samples);
 
   // The size of the input must be a power-of-2 for Cooley-Tukey because it splits its input in
   // half each time it recurses
@@ -25,18 +26,19 @@ static VALUE NativeImpl_fft(VALUE _self, VALUE rb_samples) {
     rb_raise(rb_eArgError, "array size must be a power of 2");
   }
 
-  // NOTE memory malloc'd here
-  complex<double> *samples = new complex<double>[samples_len];
+  // NOTE memory allocation here
+  auto samples = make_unique<complex<double>[]>(samples_len);
 
   // Marshall Ruby input into C++
-  for (long i = 0; i < samples_len; ++i) {
+  for (auto i = 0; i < samples_len; ++i) {
     // Fetch a element from the array
     VALUE elem = rb_ary_entry(rb_samples, i);
 
     // The element must be of Ruby type Complex
     if (!RB_TYPE_P(elem, T_COMPLEX)) {
-      // NOTE memory freed here
-      delete[] samples;
+      // NOTE memory needs to be freed explicitly here because rb_raise uses
+      // longjmp which does not call destructors before jumping up the stack
+      samples = nullptr;
 
       // BEWARE does not return
       rb_raise(rb_eArgError, "array elements must be Complex numbers");
@@ -47,21 +49,21 @@ static VALUE NativeImpl_fft(VALUE _self, VALUE rb_samples) {
     VALUE rb_imag = rb_funcall(elem, idImag, 0);
 
     // Convert Ruby values to C data
-    double real =  NUM2DBL(rb_real);
-    double imag =  NUM2DBL(rb_imag);
+    double real = NUM2DBL(rb_real);
+    double imag = NUM2DBL(rb_imag);
 
     // Convert to complex<T> then add to the array
     samples[i] = complex<double>(real, imag);
   }
 
   // Do FFT calculation here NOTE mutates input!
-  cooley_tukey::fft_in_place(samples, samples_len);
+  cooley_tukey::fft_in_place(samples.get(), samples_len);
 
   // TODO pre-allocate as we know the size
   VALUE rb_result = rb_ary_new();
 
   // Marshall C++ state into Ruby output
-  for (long i = 0; i < samples_len; ++i) {
+  for (auto i = 0; i < samples_len; ++i) {
     // Get the native complex
     complex<double> c = samples[i];
 
@@ -77,9 +79,6 @@ static VALUE NativeImpl_fft(VALUE _self, VALUE rb_samples) {
     // Push into the result array
     rb_ary_push(rb_result, rb_cmpx);
   }
-
-  // NOTE memory freed here
-  delete[] samples;
 
   return rb_result;
 }

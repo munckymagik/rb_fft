@@ -9,15 +9,15 @@
 using std::complex;
 
 // separate even/odd elements to lower/upper halves of the array respectively.
-static void separate(complex<double> *a, const long n) {
-    complex<double>* b = new complex<double>[n/2]; // get temp heap storage
-    for (long i = 0; i < n / 2; i++)
+static void separate(complex<double> *a, const size_t n) {
+    auto b = std::make_unique<complex<double>[]>(n/2); // get temp heap storage
+
+    for (size_t i = 0; i < n / 2; i++)
         b[i] = a[i * 2 + 1]; // copy all the odd elements to temp
-    for (long i = 0; i < n / 2; i++)
+    for (size_t i = 0; i < n / 2; i++)
         a[i] = a[i * 2];     // copy all the evens to the lower-half of a[]
-    for (long i = 0; i < n / 2; i++)
+    for (size_t i = 0; i < n / 2; i++)
         a[n / 2 + i] = b[i]; // copy all odd (from heap) upper-half of a[]
-    delete[] b;
 }
 
 // N input samples in X[] are FFT'd and the results are left in X[].
@@ -26,7 +26,7 @@ static void separate(complex<double> *a, const long n) {
 // The upper half of X[] is a reflection of the lower with no new information.
 //
 // N must be a power-of-2, or bad things will happen. Currently there is no check for this condition.
-void cooley_tukey::fft_in_place(complex<double> *X, const long N) {
+void cooley_tukey::fft_in_place(complex<double> *X, const size_t N) {
     if (N < 2) {
         // bottom of recursion.
         // Do nothing here, because already X[0] = x[0]
@@ -36,7 +36,7 @@ void cooley_tukey::fft_in_place(complex<double> *X, const long N) {
         fft_in_place(X + N/2, N / 2); // recurse odd items
 
         // combine results of two half recursions
-        for (long k = 0; k < N / 2; k++) {
+        for (size_t k = 0; k < N / 2; k++) {
             // w is the "twiddle-factor" and could be pre-computed
             complex<double> w = exp(complex<double>(0, -2. * M_PI * k / N));
 
