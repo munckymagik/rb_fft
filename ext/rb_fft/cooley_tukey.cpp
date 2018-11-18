@@ -33,7 +33,7 @@ void cooley_tukey::fft_in_place(complex<double> *X, const size_t N) {
     } else {
         separate(X, N); // all evens to lower half, all odds to upper half
         fft_in_place(X, N / 2); // recurse even items
-        fft_in_place(X + N/2, N / 2); // recurse odd items
+        fft_in_place(X + N / 2, N / 2); // recurse odd items
 
         // combine results of two half recursions
         for (size_t k = 0; k < N / 2; k++) {
@@ -43,8 +43,8 @@ void cooley_tukey::fft_in_place(complex<double> *X, const size_t N) {
             complex<double> e = X[k]; // even
             complex<double> o = X[k + N / 2]; // odd
 
-            X[k] = e + w * o;
-            X[k+N/2] = e - w * o;
+            X[k]         = e + w * o;
+            X[k + N / 2] = e - w * o;
         }
     }
 }
